@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     bottomNav:{
-        
+
     }
 })
 
@@ -33,9 +33,6 @@ export default function QuestList(){
             </View>
             <View style={styles.availableQuests}>
                 {/* available quests */}
-            </View>
-            <View style={styles.bottomNav}>
-
             </View>
         </View>
     )
