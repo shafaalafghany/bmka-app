@@ -7,8 +7,10 @@ import {
     ScrollView,
 } from 'react-native'
 
-// import ProgressCircle from 'react-native-progress-circle'
-// import CircleProgress from 'react-native-progress/Circle'
+import Progress from './progress'
+import CurrentQuest from './currentQuests'
+import AvailableQuests from './availableQuests'
+
 import {AnimatedCircularProgress} from 'react-native-circular-progress'
 
 const styles = StyleSheet.create({
@@ -136,73 +138,9 @@ export default function QuestList(){
 
     return (
         <View style={styles.container}>
-            <View style={styles.progress}>
-            <AnimatedCircularProgress
-                size={120}
-                width={8}
-                rotation={0}
-                fill={30}
-                tintColor="#39f"
-                onAnimationComplete={() => console.log('onAnimationComplete')}
-                backgroundColor="#3d5875">
-                    {
-                        
-                    }
-                </AnimatedCircularProgress>
-                <View style={styles.progressItem}>
-                    <Text style={styles.progressTitle}>EXP</Text>
-                    <Text style={styles.progressValue}>20/50</Text>
-                </View>
-                <View style={styles.progressItem}>
-                    <Text style={styles.progressTitle}>FINISHED</Text>
-                    <Text style={styles.progressValue}>5</Text>
-                </View>
-                <View style={styles.progressItem}>
-                    <Text style={styles.progressTitle}>ONGOING</Text>
-                    <Text style={styles.progressValue}>5</Text>
-                </View>
-            </View>
-            <View style={styles.currentQuests} >
-                <Text>CURRENT QUESTS</Text>
-                <ScrollView style={styles.currentQuestsCardContainer} horizontal={true} showsHorizontalScrollIndicator={false}>
-                    
-                    <View style={styles.currentQuestsCard}>
-                        <Text style={styles.questTitle}>{/*title*/}</Text>
-                        <View style={styles.lvExpContainer}>
-                            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-                                <Text style={styles.levelText}>LV</Text>
-                                <Text style={styles.levelValue}>{/*level*/}</Text>
-                            </View>
-                            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-                                <Text style={styles.levelText}>EXP</Text>
-                                <Text style={styles.levelValue}>{/*exp*/}</Text>
-                            </View>
-                        </View>
-                        <Pressable style={styles.currentQuestButton}>
-                            <Text style={styles.currentQuestButtonText}>Not Finished</Text>
-                        </Pressable>
-                    </View>
-                    <View style={styles.currentQuestsCard}>
-                        <Text style={styles.questTitle}>{/*title*/}</Text>
-                        <View style={styles.lvExpContainer}>
-                            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-                                <Text style={styles.levelText}>LV</Text>
-                                <Text style={styles.levelValue}>{/*level*/}</Text>
-                            </View>
-                            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-                                <Text style={styles.levelText}>EXP</Text>
-                                <Text style={styles.levelValue}>{/*exp*/}</Text>
-                            </View>
-                        </View>
-                        <Pressable style={styles.currentQuestButton}>
-                            <Text style={styles.currentQuestButtonText}>Not Finished</Text>
-                        </Pressable>
-                    </View>
-                </ScrollView>
-            </View>
-            <View style={styles.availableQuests}>
-                {/* available quests */}
-            </View>
+            <Progress />
+            <CurrentQuest />
+            <AvailableQuests />
         </View>
     )
 }
