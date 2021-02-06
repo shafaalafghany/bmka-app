@@ -1,13 +1,15 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {
     View,
     StyleSheet,
     Text,
     Pressable,
-    FlatList,
+    ScrollView,
 } from 'react-native'
 
-import ProgressCircle from 'react-native-progress-circle'
+// import ProgressCircle from 'react-native-progress-circle'
+// import CircleProgress from 'react-native-progress/Circle'
+import {AnimatedCircularProgress} from 'react-native-circular-progress'
 
 const styles = StyleSheet.create({
     container:{
@@ -44,14 +46,16 @@ const styles = StyleSheet.create({
         padding: 14,
         width: 138,
         height: 135,
+        marginHorizontal: 4,
     },
-    currentQuestsContainer:{
+    currentQuestsCardContainer:{
         marginTop: 9,
-        flexDirection: 'column',
+        flexDirection: 'row',
     },
     questTitle:{
         fontWeight: 'bold',
         fontSize: 15,
+        height: 40,
         marginBottom: 7,
     },
     lvExpContainer:{
@@ -82,6 +86,9 @@ const styles = StyleSheet.create({
     currentQuestButtonText:{
         color: '#C5C7C7',
         fontSize: 12,
+    },
+    currentQuests:{
+        marginTop: 18,
     }
 })
 
@@ -108,7 +115,7 @@ export default function QuestList(){
         },
     ]
 
-    const CurrentQuestCard =  (
+    const CurrentQuestCard = (title, ) => (
         <View style={styles.currentQuestsCard}>
             <Text style={styles.questTitle}>{/*title*/}</Text>
             <View style={styles.lvExpContainer}>
@@ -130,16 +137,18 @@ export default function QuestList(){
     return (
         <View style={styles.container}>
             <View style={styles.progress}>
-                <ProgressCircle
-                    percent={30}
-                    radius={50}
-                    borderWidth={8}
-                    color="#3399FF"
-                    shadowColor="#999"
-                    bgColor="#E5E5E5"
-                >
-                    <Text style={{fontSize: 18}}>30%</Text>
-                </ProgressCircle>
+            <AnimatedCircularProgress
+                size={120}
+                width={8}
+                rotation={0}
+                fill={30}
+                tintColor="#39f"
+                onAnimationComplete={() => console.log('onAnimationComplete')}
+                backgroundColor="#3d5875">
+                    {
+                        
+                    }
+                </AnimatedCircularProgress>
                 <View style={styles.progressItem}>
                     <Text style={styles.progressTitle}>EXP</Text>
                     <Text style={styles.progressValue}>20/50</Text>
@@ -153,11 +162,43 @@ export default function QuestList(){
                     <Text style={styles.progressValue}>5</Text>
                 </View>
             </View>
-            <View>
+            <View style={styles.currentQuests} >
                 <Text>CURRENT QUESTS</Text>
-                <View style={styles.currentQuestsContainer}>
-                   {/* TODO: buat flatlist */}
-                </View>
+                <ScrollView style={styles.currentQuestsCardContainer} horizontal={true} showsHorizontalScrollIndicator={false}>
+                    
+                    <View style={styles.currentQuestsCard}>
+                        <Text style={styles.questTitle}>{/*title*/}</Text>
+                        <View style={styles.lvExpContainer}>
+                            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
+                                <Text style={styles.levelText}>LV</Text>
+                                <Text style={styles.levelValue}>{/*level*/}</Text>
+                            </View>
+                            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
+                                <Text style={styles.levelText}>EXP</Text>
+                                <Text style={styles.levelValue}>{/*exp*/}</Text>
+                            </View>
+                        </View>
+                        <Pressable style={styles.currentQuestButton}>
+                            <Text style={styles.currentQuestButtonText}>Not Finished</Text>
+                        </Pressable>
+                    </View>
+                    <View style={styles.currentQuestsCard}>
+                        <Text style={styles.questTitle}>{/*title*/}</Text>
+                        <View style={styles.lvExpContainer}>
+                            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
+                                <Text style={styles.levelText}>LV</Text>
+                                <Text style={styles.levelValue}>{/*level*/}</Text>
+                            </View>
+                            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
+                                <Text style={styles.levelText}>EXP</Text>
+                                <Text style={styles.levelValue}>{/*exp*/}</Text>
+                            </View>
+                        </View>
+                        <Pressable style={styles.currentQuestButton}>
+                            <Text style={styles.currentQuestButtonText}>Not Finished</Text>
+                        </Pressable>
+                    </View>
+                </ScrollView>
             </View>
             <View style={styles.availableQuests}>
                 {/* available quests */}
