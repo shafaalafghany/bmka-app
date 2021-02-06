@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 12,
         marginTop: 20,
-        backgroundColor: '#E5E5E5',
+        backgroundColor: '#e5e5e5',
         flexDirection: 'column',
     },
     progress:{

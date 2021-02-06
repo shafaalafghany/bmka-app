@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     View,
     StyleSheet,
@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 
 import {AnimatedCircularProgress} from 'react-native-circular-progress'
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 
 const styles = StyleSheet.create({
     container:{
@@ -87,10 +88,43 @@ const styles = StyleSheet.create({
     },
     currentQuests:{
         marginTop: 18,
+    },
+    progressLevelContainer:{
+        flexDirection:'column',
+        alignItems: 'center',
+    },
+    progressLevel:{
+        fontSize: 48,
+        color: '#337eff',
+        fontWeight: 'normal',
+    },
+    progressLevelCaption:{
+        marginTop: -8,
+        color: '#337eff',
     }
 })
 
 export default function Progress(){
+
+    const [stats, setStats] = useState({
+        level: 0,
+        exp: 0,
+        maxExp: 0,
+        progress: 0,
+        loading: true,
+    })
+
+    useEffect(() => {
+        setTimeout(() => {
+            setStats({
+                level: 28,
+                exp: 20,
+                maxExp: 25,
+                progress: 20/25*100,
+                loading: false,
+            })
+        }, 3000);
+    },[])
     
     return (
         <View style={styles.progress}>
@@ -98,22 +132,34 @@ export default function Progress(){
                 size={120}
                 width={8}
                 rotation={0}
-                fill={30}
+                fill={stats.progress}
                 duration={1000}
+                // easing={Easing.bounce}
                 tintColor="#39f"
-                onAnimationComplete={() => console.log('onAnimationComplete')}
+                // onAnimationComplete={}
                 backgroundColor="#3d5875">
                     {
-                        (fill) => (
-                            <View>
-                                <Text>{`${Math.round(fill)}%`}</Text>
+                        () => (
+                            <View style={styles.progressLevelContainer}>
+                                {
+                                   stats.loading? <SkeletonPlaceholder>
+                                        <SkeletonPlaceholder.Item height={48} width={48} marginBottom={8} />
+                                        </SkeletonPlaceholder> 
+                                        : <Text style={styles.progressLevel}>99</Text>
+                                }
+                                <Text style={styles.progressLevelCaption}>LEVEL</Text>
                             </View>
                         )
                     }
             </AnimatedCircularProgress>
             <View style={styles.progressItem}>
                 <Text style={styles.progressTitle}>EXP</Text>
-                <Text style={styles.progressValue}>20/50</Text>
+                {
+                    stats.loading? <SkeletonPlaceholder>
+                        <SkeletonPlaceholder.Item height={18} width={40} marginTop={6} borderRadius={50} />
+                    </SkeletonPlaceholder>
+                    : <Text style={styles.progressValue}>20/50</Text>
+                }
             </View>
             <View style={styles.progressItem}>
                 <Text style={styles.progressTitle}>FINISHED</Text>
