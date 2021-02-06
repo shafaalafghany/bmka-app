@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native'
+import Moudal from '../Modal'
 
 export default function AvailableQuestCard(){
     let data = [
@@ -26,9 +27,11 @@ export default function AvailableQuestCard(){
         },
       ];
 
+      const [modalShow, setModalShow] = useState(false)
+
     const Card = ({ item }) => {
         return (
-            <TouchableOpacity style={styles.card}>
+            <TouchableOpacity style={styles.card} onPress={() => setModalShow(true)}>
                     <View style={styles.row}>
                         <View style={styles.content}>
                             <View style={styles.titleAndData}>
@@ -61,6 +64,7 @@ export default function AvailableQuestCard(){
                 keyExtractor={item => item.id}
                 />
             </ScrollView>
+            <Moudal visible={modalShow} closeModal={() => {setModalShow(false)}}/>
         </View>
     )
 }
