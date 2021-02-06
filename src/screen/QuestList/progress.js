@@ -124,7 +124,7 @@ export default function Progress(){
                 progress: 20/25*100,
                 loading: false,
             })
-        }, 3000);
+        }, Math.random()*(4000-500)+500); //randbetween .5 s to 4 s
     },[])
     
     return (

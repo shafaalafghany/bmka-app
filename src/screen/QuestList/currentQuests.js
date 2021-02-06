@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -11,6 +11,7 @@ import {
 import Progress from "./progress";
 
 import { AnimatedCircularProgress } from "react-native-circular-progress";
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 
 const styles = StyleSheet.create({
   container: {
@@ -94,6 +95,15 @@ const styles = StyleSheet.create({
 });
 
 export default function CurrentQuest() {
+  
+  const [questsLoading, setQuestsLoading] = useState(true)
+
+  useEffect(() => {
+      setTimeout(() => {
+          setQuestsLoading(false)
+      }, Math.random()*(4000-500)+500); //randbetween .5 s to 4 s
+  })
+    
   let data = [
     {
       id: 1,
@@ -139,14 +149,23 @@ export default function CurrentQuest() {
   return (
     <View style={styles.currentQuests}>
       <Text>CURRENT QUESTS</Text>
-      <ScrollView style={styles.currentQuestsCardContainer} horizontal={true} showsHorizontalScrollIndicator={false}>
-        <FlatList 
-        data={data}
-        renderItem={item => (Card(item))}
-        keyExtractor={data => data.id}
-        horizontal={true}
-        />
-      </ScrollView>
+      {false? 
+        /* loading */
+        <SkeletonPlaceholder backgroundColor="#BDBDBD" highlightColor="#D8D8D8">
+            <ScrollView style={styles.currentQuestsCardContainer} horizontal={true} showsHorizontalScrollIndicator={false}>
+                {[1,2,3,4,5,6].map(x => <SkeletonPlaceholder.Item key={x} width={138} height={135} borderRadius={18} marginHorizontal={4} />)}
+            </ScrollView>
+        </SkeletonPlaceholder>
+        /* if loading is done */
+        :<ScrollView style={styles.currentQuestsCardContainer} horizontal={true} showsHorizontalScrollIndicator={false}>
+          <FlatList 
+                data={data}
+                renderItem={item => (Card(item))}
+                keyExtractor={data => data.id}
+                horizontal={true}
+            />
+          </ScrollView>
+        }
     </View>
   );
 }
