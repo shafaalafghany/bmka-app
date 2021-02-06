@@ -149,7 +149,7 @@ export default function CurrentQuest() {
   return (
     <View style={styles.currentQuests}>
       <Text>CURRENT QUESTS</Text>
-      {false? 
+      {questLoading? 
         /* loading */
         <SkeletonPlaceholder backgroundColor="#BDBDBD" highlightColor="#D8D8D8">
             <ScrollView style={styles.currentQuestsCardContainer} horizontal={true} showsHorizontalScrollIndicator={false}>
