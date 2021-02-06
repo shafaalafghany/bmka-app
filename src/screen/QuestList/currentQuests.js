@@ -6,7 +6,9 @@ import {
   Pressable,
   ScrollView,
   FlatList,
+  TouchableOpacity
 } from "react-native";
+import { Moudal } from '../../component'
 
 import Progress from "./progress";
 
@@ -97,6 +99,7 @@ const styles = StyleSheet.create({
 export default function CurrentQuest() {
   
   const [questsLoading, setQuestsLoading] = useState(true)
+  const [modalShow, setModalShow] = useState(false)
 
   useEffect(() => {
       setTimeout(() => {
@@ -127,7 +130,7 @@ export default function CurrentQuest() {
 
   const Card = ({ item }) => {
       return (
-        <View style={styles.currentQuestsCard}>
+        <TouchableOpacity style={styles.currentQuestsCard} onPress={() => setModalShow(true)}>
         <Text style={styles.questTitle}>{item.title}</Text>
         <View style={styles.lvExpContainer}>
           <View style={{ flexDirection: "row", alignItems: "baseline" }}>
@@ -142,7 +145,7 @@ export default function CurrentQuest() {
         <Pressable style={styles.currentQuestButton}>
           <Text style={styles.currentQuestButtonText}>Not Finished</Text>
         </Pressable>
-      </View>
+      </TouchableOpacity>
       )
   }
 
@@ -166,6 +169,7 @@ export default function CurrentQuest() {
             />
           </ScrollView>
         }
+        <Moudal visible={modalShow} closeModal={() => {setModalShow(false)}}/>
     </View>
   );
 }

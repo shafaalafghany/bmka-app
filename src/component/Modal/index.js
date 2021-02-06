@@ -31,7 +31,7 @@ kasih.</Text>
                             <TouchableOpacity style={styles.button} onPress={closeModal}>
                                 <Text style={styles.buttonText}>Quest Done</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.button} onPress={closeModal}>
+                            <TouchableOpacity style={styles.button} onPress={closeModal} onPress={closeModal}>
                                 <Text style={styles.buttonText}>Take Quest</Text>
                             </TouchableOpacity>
                         </View>
