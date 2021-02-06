@@ -10,6 +10,7 @@ import {
 import Progress from './progress'
 import CurrentQuest from './currentQuests'
 import AvailableQuests from './availableQuests'
+import { AvailableQuestCard } from '../../component'
 
 import {AnimatedCircularProgress} from 'react-native-circular-progress'
 
@@ -140,7 +141,7 @@ export default function QuestList(){
         <View style={styles.container}>
             <Progress />
             <CurrentQuest />
-            <AvailableQuests />
+            <AvailableQuestCard />
         </View>
     )
 }

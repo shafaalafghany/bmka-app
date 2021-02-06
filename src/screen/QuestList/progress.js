@@ -105,7 +105,7 @@ export default function Progress(){
                 backgroundColor="#3d5875">
                     {
                         (fill) => (
-                            <View styles={}>
+                            <View>
                                 <Text>{`${Math.round(fill)}%`}</Text>
                             </View>
                         )
