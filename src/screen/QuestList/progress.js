@@ -9,6 +9,7 @@ import {
 
 import {AnimatedCircularProgress} from 'react-native-circular-progress'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
+import AnimateNumber from 'react-native-animate-number'
 
 const styles = StyleSheet.create({
     container:{
@@ -142,10 +143,10 @@ export default function Progress(){
                         () => (
                             <View style={styles.progressLevelContainer}>
                                 {
-                                   stats.loading? <SkeletonPlaceholder>
-                                        <SkeletonPlaceholder.Item height={48} width={48} marginBottom={8} />
-                                        </SkeletonPlaceholder> 
-                                        : <Text style={styles.progressLevel}>99</Text>
+                                   stats.loading? <Text style={styles.progressLevel}>-</Text>
+                                        : <AnimateNumber style={styles.progressLevel} value={stats.level} formatter={
+                                            val => Math.round(val)
+                                        } />
                                 }
                                 <Text style={styles.progressLevelCaption}>LEVEL</Text>
                             </View>
@@ -155,10 +156,10 @@ export default function Progress(){
             <View style={styles.progressItem}>
                 <Text style={styles.progressTitle}>EXP</Text>
                 {
-                    stats.loading? <SkeletonPlaceholder>
-                        <SkeletonPlaceholder.Item height={18} width={40} marginTop={6} borderRadius={50} />
+                    stats.loading? <SkeletonPlaceholder backgroundColor="#BDBDBD" highlightColor="#D8D8D8">
+                        <SkeletonPlaceholder.Item height={18} width={40} marginTop={6} borderRadius={50}  />
                     </SkeletonPlaceholder>
-                    : <Text style={styles.progressValue}>20/50</Text>
+                    : <AnimateNumber style={styles.progressValue} value={stats.exp} formatter={val => `${Math.round(val)}/${stats.maxExp}`} />
                 }
             </View>
             <View style={styles.progressItem}>
