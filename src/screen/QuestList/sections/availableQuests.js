@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native'
-import Moudal from '../Modal'
+import {
+    AvailableQuestCard,
+    Moudal
+} from '../../../component'
 
-export default function AvailableQuestCard(){
+export default function AvailableQuests(){
     let data = [
         {
           id: 1,
@@ -60,7 +63,7 @@ export default function AvailableQuestCard(){
             <ScrollView showsVerticalScrollIndicator={false}>
                 <FlatList 
                 data={data}
-                renderItem={Card}
+                renderItem={AvailableQuestCard}
                 keyExtractor={item => item.id}
                 />
             </ScrollView>

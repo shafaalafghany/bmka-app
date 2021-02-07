@@ -8,7 +8,10 @@ import {
   FlatList,
   TouchableOpacity
 } from "react-native";
-import { Moudal } from '../../component'
+import { 
+  Moudal,
+  AvailableQuestCard,
+} from '../../../component'
 
 import Progress from "./progress";
 

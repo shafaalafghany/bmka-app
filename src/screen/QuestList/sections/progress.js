@@ -11,6 +11,8 @@ import {AnimatedCircularProgress} from 'react-native-circular-progress'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 import AnimateNumber from 'react-native-animate-number'
 
+import axios from '../../../utils/axios'
+
 const styles = StyleSheet.create({
     container:{
         flex: 1,
@@ -116,15 +118,14 @@ export default function Progress(){
     })
 
     useEffect(() => {
-        setTimeout(() => {
-            setStats({
-                level: 28,
-                exp: 20,
-                maxExp: 25,
-                progress: 20/25*100,
-                loading: false,
-            })
-        }, Math.random()*(4000-500)+500); //randbetween .5 s to 4 s
+        axios.get('user/level')
+        .then((response) => {
+            let data = response.data
+            let level = data.level
+        })
+        .catch((error) => {
+            console.log(error)
+        })
     },[])
     
     return (

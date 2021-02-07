@@ -1,4 +1,4 @@
-import AvailableQuestCard from './AvailableQuest'
+import AvailableQuestCard from './AvailableQuestCard'
 import Moudal from './Modal'
 
 export {

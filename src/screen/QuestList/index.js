@@ -7,10 +7,10 @@ import {
     ScrollView,
 } from 'react-native'
 
-import Progress from './progress'
-import CurrentQuest from './currentQuests'
-import AvailableQuests from './availableQuests'
-import { AvailableQuestCard } from '../../component'
+import Progress from './sections/progress'
+import CurrentQuest from './sections/currentQuests'
+import AvailableQuestCard from './sections/availableQuests'
+// import { AvailableQuestCard } from '../../component'
 
 import {AnimatedCircularProgress} from 'react-native-circular-progress'
 
