@@ -13,6 +13,8 @@ import {
   AvailableQuestCard,
 } from '../../../component'
 
+import axios from '../../../utils/axios'
+
 import Progress from "./progress";
 
 import { AnimatedCircularProgress } from "react-native-circular-progress";
@@ -103,38 +105,36 @@ export default function CurrentQuest() {
   
   const [questsLoading, setQuestsLoading] = useState(true)
   const [modalShow, setModalShow] = useState(false)
+  const [content, setContent] = useState([])
+  const [selectedContent, setSelectedContent] = useState({})
 
   useEffect(() => {
-      setTimeout(() => {
-          setQuestsLoading(false)
-      }, Math.random()*(4000-500)+500); //randbetween .5 s to 4 s
-  })
+      refreshData()
+  },[])
     
-  let data = [
-    {
-      id: 1,
-      title: "Melengkapi Data Profil",
-      level: 99,
-      exp: 200,
-    },
-    {
-      id: 2,
-      title: "Melengkapi Data Profil",
-      level: 99,
-      exp: 200,
-    },
-    {
-      id: 3,
-      title: "Melengkapi Data Profil",
-      level: 99,
-      exp: 200,
-    },
-  ];
+  const refreshData = () => {
+    setQuestsLoading(true)
+    axios.get('mission/active')
+      .then((res) => {
+        let data = res.data
+        console.log("current Quest sakjdhksfhjksdhkjsfhjksdfhksdf")
+        console.log(data)
+        setContent(data.data)
+        setQuestsLoading(false)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   const Card = ({ item }) => {
+    let press = () => {
+      setSelectedContent(item); setModalShow(true)
+    }
+
       return (
-        <TouchableOpacity style={styles.currentQuestsCard} onPress={() => setModalShow(true)}>
-        <Text style={styles.questTitle}>{item.title}</Text>
+        <TouchableOpacity style={styles.currentQuestsCard} onPress={press}>
+        <Text style={styles.questTitle}>{item.name}</Text>
         <View style={styles.lvExpContainer}>
           <View style={{ flexDirection: "row", alignItems: "baseline" }}>
             <Text style={styles.levelText}>LV</Text>
@@ -142,7 +142,7 @@ export default function CurrentQuest() {
           </View>
           <View style={{ flexDirection: "row", alignItems: "baseline" }}>
             <Text style={styles.levelText}>EXP</Text>
-            <Text style={styles.levelValue}>{item.exp}</Text>
+            <Text style={styles.levelValue}>{item.poin}</Text>
           </View>
         </View>
         <Pressable style={styles.currentQuestButton}>
@@ -165,14 +165,14 @@ export default function CurrentQuest() {
         /* if loading is done */
         :<ScrollView style={styles.currentQuestsCardContainer} horizontal={true} showsHorizontalScrollIndicator={false}>
           <FlatList 
-                data={data}
-                renderItem={item => (Card(item))}
+                data={content}
+                renderItem={Card}
                 keyExtractor={data => data.id}
                 horizontal={true}
             />
           </ScrollView>
         }
-        <Moudal visible={modalShow} closeModal={() => {setModalShow(false)}}/>
+        <Moudal content={selectedContent} refreshData={refreshData} showButton={true} buttonTitle="Quest Done" visible={modalShow} closeModal={() => {setModalShow(false)}}/>
     </View>
   );
 }

@@ -114,7 +114,7 @@ export default function Progress(){
         exp: 0,
         maxExp: 0,
         progress: 0,
-        loading: true,
+        loading: false,
     })
 
     useEffect(() => {
@@ -122,6 +122,12 @@ export default function Progress(){
         .then((response) => {
             let data = response.data
             let level = data.level
+            setStats( prev => {
+                return{
+                    ...prev,
+                    level: level,
+                }
+            })
         })
         .catch((error) => {
             console.log(error)

@@ -1,55 +1,53 @@
-import React, { useState } from 'react'
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, FlatList, ToastAndroid } from 'react-native'
 import {
     AvailableQuestCard,
     Moudal
 } from '../../../component'
 
-export default function AvailableQuests(){
-    let data = [
-        {
-          id: 1,
-          title: "Melengkapi Data Profil",
-          level: 99,
-          exp: 200,
-          desc: "Blabla Blabla Blabla Blabla Blabla Blabla Blabla Blabla Blabla"
-        },
-        {
-          id: 2,
-          title: "Melengkapi Data Profil",
-          level: 99,
-          exp: 200,
-          desc: "Blabla Blabla Blabla Blabla Blabla Blabla Blabla Blabla Blabla"
-        },
-        {
-          id: 3,
-          title: "Melengkapi Data Profil",
-          level: 99,
-          exp: 200,
-          desc: "Blabla Blabla Blabla Blabla Blabla Blabla Blabla Blabla Blabla"
-        },
-      ];
+import axios from '../../../utils/axios'
 
-      const [modalShow, setModalShow] = useState(false)
+export default function AvailableQuests(){
+
+    const [modalShow, setModalShow] = useState(false)
+    const [content, setContent] = useState([])
+    const [selectedContent, setSelectedContent] = useState({})
+
+    useEffect(() => {
+        axios.get('mission/available')
+        .then((res) => {
+            let data = res.data
+            setContent(data.data)
+        })
+        .catch((err) => {
+            console.log(err.response)
+            ToastAndroid.show('Ups error', ToastAndroid.SHORT)
+        })
+    }, [])
 
     const Card = ({ item }) => {
+        
+        let press = () => {
+            setSelectedContent(item); setModalShow(true)
+        }
+
         return (
-            <TouchableOpacity style={styles.card} onPress={() => setModalShow(true)}>
+            <TouchableOpacity style={styles.card} onPress={press}>
                     <View style={styles.row}>
                         <View style={styles.content}>
                             <View style={styles.titleAndData}>
-                                <Text style={styles.title}>{item.title}</Text>
+                                <Text style={styles.title}>{item.name}</Text>
                                 <View style={styles.levelAndXP}>
                                     <Text style={styles.lv}>LV</Text>
                                     <Text style={{fontWeight: 'bold', fontSize: 15}}>{item.level}</Text>
                                 </View>
                                 <View style={styles.levelAndXP}>
                                     <Text style={styles.xp}>EXP</Text>
-                                    <Text style={{fontWeight: 'bold'}}>{item.exp}</Text>
+                                    <Text style={{fontWeight: 'bold'}}>{item.poin}</Text>
                                 </View>
                             </View>
                             <View style={styles.description}>
-                                <Text style={styles.isiDescription}>{item.desc}</Text>
+                                <Text style={styles.isiDescription}>{item.description.length > 55 ? `${item.description.substring(0,51)}...` : item.description}</Text>
                             </View>
                         </View>
                     </View>
@@ -62,12 +60,15 @@ export default function AvailableQuests(){
             <Text style={{marginBottom: 17}}>AVAILABLE QUESTS</Text>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <FlatList 
-                data={data}
-                renderItem={AvailableQuestCard}
+                data={content}
+                renderItem={Card}
                 keyExtractor={item => item.id}
                 />
             </ScrollView>
-            <Moudal visible={modalShow} closeModal={() => {setModalShow(false)}}/>
+            <Moudal
+            visible={modalShow}
+            content={selectedContent}
+            closeModal={() => {setModalShow(false)}}/>
         </View>
     )
 }

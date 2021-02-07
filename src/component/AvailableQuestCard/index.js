@@ -1,8 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native'
 import Moudal from '../Modal'
 
+import axios from '../../utils/axios'
+
 export default function AvailableQuestCard({item, setModalShow}){
+
+    // const [content, setContent] = useState({
+    //     title: '',
+    //     level: 0,
+    //     exp: 0,
+    //     desc: ''
+    // })
+
+    // useEffect(() => {
+    //     axios.get('mission/available')
+    //     .then((res) => {
+    //         let data = res.data
+    //         let title = data.name
+    //         let level = data.level
+    //         console.log(res)
+    //     })
+    //     .catch((err) => {
+    //         console.log(err)
+    //     })
+    // }, [])
 
     return(
         <TouchableOpacity style={styles.card} onPress={() => setModalShow(true)}>
