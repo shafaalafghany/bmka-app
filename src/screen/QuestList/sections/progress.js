@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import {useSelector} from 'react-redux'
 import {
     View,
     StyleSheet,
@@ -95,6 +96,12 @@ const styles = StyleSheet.create({
     progressLevelContainer:{
         flexDirection:'column',
         alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 5,
+        borderColor: '#337eff',
+        borderRadius: 99,
+        width:120,
+        height: 120,
     },
     progressLevel:{
         fontSize: 48,
@@ -109,34 +116,40 @@ const styles = StyleSheet.create({
 
 export default function Progress(){
 
+    const current = useSelector(state => state.userStats.current)
+    const available = useSelector(state => state.userStats.available)
+    const loadingCurrent = useSelector(state => state.userStats.loadingCurrent)
+    const loadingAvailable = useSelector(state => state.userStats.loadingAvailable)
+
     const [stats, setStats] = useState({
         level: 0,
         exp: 0,
-        maxExp: 0,
-        progress: 0,
-        loading: false,
+        loading: true,
     })
 
-    useEffect(() => {
-        axios.get('user/level')
-        .then((response) => {
-            let data = response.data
-            let level = data.level
-            setStats( prev => {
-                return{
-                    ...prev,
-                    level: level,
-                }
+    let requestStats = async () => {
+        try{
+            let response = await axios.get('user/level')
+            let level = response.data.level
+            response = await axios.get('user/data')
+            let exp = response.data.data[0].poin
+            setStats({
+                level: level,
+                exp: exp,
+                loading: false,
             })
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+        } catch (e){
+            console.error(e)
+        }
+    }
+
+    useEffect(() => {
+        requestStats()
     },[])
     
     return (
         <View style={styles.progress}>
-            <AnimatedCircularProgress
+            {/* <AnimatedCircularProgress
                 size={120}
                 width={8}
                 rotation={0}
@@ -148,34 +161,49 @@ export default function Progress(){
                 backgroundColor="#3d5875">
                     {
                         () => (
-                            <View style={styles.progressLevelContainer}>
-                                {
-                                   stats.loading? <Text style={styles.progressLevel}>-</Text>
-                                        : <AnimateNumber style={styles.progressLevel} value={stats.level} formatter={
-                                            val => Math.round(val)
-                                        } />
-                                }
-                                <Text style={styles.progressLevelCaption}>LEVEL</Text>
-                            </View>
+                            
                         )
                     }
-            </AnimatedCircularProgress>
+            </AnimatedCircularProgress> */}
+            <View style={styles.progressLevelContainer}>
+                {
+                    stats.loading? <Text style={styles.progressLevel}>-</Text>
+                        : <AnimateNumber style={styles.progressLevel} value={stats.level} formatter={
+                            val => Math.round(val)
+                        } />
+                }
+                <Text style={styles.progressLevelCaption}>LEVEL</Text>
+            </View>
             <View style={styles.progressItem}>
                 <Text style={styles.progressTitle}>EXP</Text>
                 {
                     stats.loading? <SkeletonPlaceholder backgroundColor="#BDBDBD" highlightColor="#D8D8D8">
                         <SkeletonPlaceholder.Item height={18} width={40} marginTop={6} borderRadius={50}  />
                     </SkeletonPlaceholder>
-                    : <AnimateNumber style={styles.progressValue} value={stats.exp} formatter={val => `${Math.round(val)}/${stats.maxExp}`} />
+                    : <AnimateNumber style={styles.progressValue} value={stats.exp} formatter={val => `${Math.round(val)}`} />
                 }
             </View>
             <View style={styles.progressItem}>
-                <Text style={styles.progressTitle}>FINISHED</Text>
-                <Text style={styles.progressValue}>5</Text>
+                <Text style={styles.progressTitle}>AVAILABLE</Text>
+                {/* <Text style={styles.progressValue}>{available}</Text> */}
+                {
+                    loadingAvailable? <SkeletonPlaceholder backgroundColor="#BDBDBD" highlightColor="#D8D8D8">
+                        <SkeletonPlaceholder.Item height={18} width={40} marginTop={6} borderRadius={50} alignSelf="center"  />
+                    </SkeletonPlaceholder>
+                    // : <AnimateNumber style={styles.progressValue} interval={2} value={available} formatter={val => `${Math.round(val)}`} />
+                    : <Text style={styles.progressValue}>{available}</Text>
+                }
             </View>
             <View style={styles.progressItem}>
                 <Text style={styles.progressTitle}>ONGOING</Text>
-                <Text style={styles.progressValue}>5</Text>
+                {/* <Text style={styles.progressValue}>{current}</Text> */}
+                {
+                    loadingCurrent? <SkeletonPlaceholder backgroundColor="#BDBDBD" highlightColor="#D8D8D8">
+                        <SkeletonPlaceholder.Item height={18} width={40} marginTop={6} borderRadius={50} alignSelf="center"  />
+                    </SkeletonPlaceholder>
+                    // : <AnimateNumber style={styles.progressValue} interval={1} value={current} formatter={val => `${Math.round(val)}`} />
+                    : <Text style={styles.progressValue}>{current}</Text>
+                }
             </View>
         </View>
     )

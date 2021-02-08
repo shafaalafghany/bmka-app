@@ -4,29 +4,38 @@ import {
     AvailableQuestCard,
     Moudal
 } from '../../../component'
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
+
+import {useDispatch} from 'react-redux'
 
 import axios from '../../../utils/axios'
 
 export default function AvailableQuests(){
 
+    const dispatch = useDispatch()
+
     const [modalShow, setModalShow] = useState(false)
     const [content, setContent] = useState([])
+    const [questsLoading, setQuestsLoading] = useState(true)
     const [selectedContent, setSelectedContent] = useState({})
 
     useEffect(() => {
+        dispatch({type:'userStats',loadingAvailable:true})
         axios.get('mission/available')
         .then((res) => {
             let data = res.data
             setContent(data.data)
+            dispatch({type:'userStats',available:data.data.length, loadingAvailable: false})
         })
         .catch((err) => {
             console.log(err.response)
             ToastAndroid.show('Ups error', ToastAndroid.SHORT)
         })
+        .finally(() => setQuestsLoading(false))
     }, [])
 
     const Card = ({ item }) => {
-        
+
         let press = () => {
             setSelectedContent(item); setModalShow(true)
         }
@@ -58,13 +67,29 @@ export default function AvailableQuests(){
     return(
         <View style={styles.container}>
             <Text style={{marginBottom: 17}}>AVAILABLE QUESTS</Text>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            {questsLoading? 
+                /* loading */
+                <SkeletonPlaceholder backgroundColor="#BDBDBD" highlightColor="#D8D8D8">
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        {[1,2,3,4,5,6].map(x => <SkeletonPlaceholder.Item key={x} height={135} borderRadius={18} marginBottom={12} />)}
+                    </ScrollView>
+                </SkeletonPlaceholder>
+                /* if loading is done */
+                :<ScrollView showsVerticalScrollIndicator={false}>
+                    <FlatList 
+                    data={content}
+                    renderItem={Card}
+                    keyExtractor={item => item.id}
+                    />
+                </ScrollView>
+            }
+            {/* <ScrollView showsVerticalScrollIndicator={false}>
                 <FlatList 
                 data={content}
                 renderItem={Card}
                 keyExtractor={item => item.id}
                 />
-            </ScrollView>
+            </ScrollView> */}
             <Moudal
             visible={modalShow}
             content={selectedContent}

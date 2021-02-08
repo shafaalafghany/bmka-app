@@ -7,18 +7,22 @@ import {
     ScrollView,
 } from 'react-native'
 
+import { Provider } from 'react-redux'
+
 import Progress from './sections/progress'
 import CurrentQuest from './sections/currentQuests'
 import AvailableQuestCard from './sections/availableQuests'
+
+import store from '../../utils/store'
 // import { AvailableQuestCard } from '../../component'
 
-import {AnimatedCircularProgress} from 'react-native-circular-progress'
+// import {AnimatedCircularProgress} from 'react-native-circular-progress'
 
 const styles = StyleSheet.create({
     container:{
         flex: 1,
         paddingHorizontal: 12,
-        marginTop: 20,
+        marginTop: 40,
         backgroundColor: '#e5e5e5',
         flexDirection: 'column',
     },
@@ -138,10 +142,12 @@ export default function QuestList(){
     )
 
     return (
-        <View style={styles.container}>
-            <Progress />
-            <CurrentQuest />
-            <AvailableQuestCard />
-        </View>
+        <Provider store={store}>
+            <View style={styles.container}>
+                <Progress />
+                <CurrentQuest />
+                <AvailableQuestCard />
+            </View>
+        </Provider>
     )
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useDispatch} from 'react-redux'
 import {
   View,
   StyleSheet,
@@ -103,6 +104,7 @@ const styles = StyleSheet.create({
 
 export default function CurrentQuest() {
   
+  const dispatch = useDispatch()
   const [questsLoading, setQuestsLoading] = useState(true)
   const [modalShow, setModalShow] = useState(false)
   const [content, setContent] = useState([])
@@ -114,12 +116,13 @@ export default function CurrentQuest() {
     
   const refreshData = () => {
     setQuestsLoading(true)
+    dispatch({type:'userStats',loadingCurrent:true})
     axios.get('mission/active')
       .then((res) => {
         let data = res.data
-        console.log("current Quest sakjdhksfhjksdhkjsfhjksdfhksdf")
         console.log(data)
         setContent(data.data)
+        dispatch({type:'userStats',current:data.data.length, loadingCurrent: false})
         setQuestsLoading(false)
       })
       .catch((err) => {
